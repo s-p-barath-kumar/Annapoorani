@@ -6,7 +6,7 @@ import {
     superAdminTransactions,
     filterTransactions,
     totalTransaction,
-} from "../controllers/superAdminController.js";
+} from "../controllers/superadminController.js";
 
 const router = express.Router();
 
