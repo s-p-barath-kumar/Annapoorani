@@ -8,6 +8,9 @@ logs/
 # OS files
 .DS_Store
 
+# Ignore the root env
+.env
+
 # Ignore branch-specific envs only
 config/env/development.env
 config/env/production.env
