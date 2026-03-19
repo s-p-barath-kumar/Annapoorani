@@ -9,6 +9,7 @@ logs/
 .DS_Store
 
 # Ignore branch-specific envs only
+.env
 config/env/development.env
 config/env/production.env
 
