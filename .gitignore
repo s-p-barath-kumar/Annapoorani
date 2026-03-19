@@ -12,6 +12,7 @@ logs/
 .env
 
 # Ignore branch-specific envs only
+.env
 config/env/development.env
 config/env/production.env
 
