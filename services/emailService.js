@@ -1,17 +1,22 @@
 import nodemailer from "nodemailer";
 
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+transporter.verify()
+  .then(() => console.log("SMTP Ready"))
+  .catch(err => console.log(" SMTP Error:", err));
 
 export const sendEmailOtp = async (email, otp) => {
-  console.log("Sending OTP email to:", email, "with OTP:", otp );
+  console.log("Sending OTP email to:", email, "with OTP:", otp);
   const cleanEmail = email.trim();
-  
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
 
   await transporter.sendMail({
     from: process.env.EMAIL_USER,
@@ -25,14 +30,6 @@ export const sendEmailOtp = async (email, otp) => {
 export const sendStudentCredentials = async (email, regNo, password) => {
 
   const cleanEmail = email.trim();
-
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
 
 
   await transporter.sendMail({
