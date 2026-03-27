@@ -14,11 +14,13 @@ export const sendEmailOtp = async (email, otp) => {
     },
   });
 
+    console.log("Sending OTP email to:", email, "with OTP:", otp, process.env.EMAIL_USER, process.env.EMAIL_PASS );
+
+
   transporter.verify()
   .then(() => console.log("SMTP Ready for verify"))
   .catch(err => console.log(" SMTP Error for verify:", err));
 
-  console.log("Sending OTP email to:", email, "with OTP:", otp);
   const cleanEmail = email.trim();
 
   await transporter.sendMail({
