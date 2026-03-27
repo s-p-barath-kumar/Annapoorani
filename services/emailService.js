@@ -3,21 +3,21 @@ import dns from "dns";
 
 dns.setDefaultResultOrder("ipv4first");
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
-
-transporter.verify()
-  .then(() => console.log("SMTP Ready"))
-  .catch(err => console.log(" SMTP Error:", err));
-
 export const sendEmailOtp = async (email, otp) => {
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  transporter.verify()
+  .then(() => console.log("SMTP Ready for verify"))
+  .catch(err => console.log(" SMTP Error for verify:", err));
+
   console.log("Sending OTP email to:", email, "with OTP:", otp);
   const cleanEmail = email.trim();
 
@@ -33,7 +33,19 @@ export const sendEmailOtp = async (email, otp) => {
 export const sendStudentCredentials = async (email, regNo, password) => {
 
   const cleanEmail = email.trim();
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
 
+  transporter.verify()
+  .then(() => console.log("SMTP Ready"))
+  .catch(err => console.log(" SMTP Error:", err));
 
   await transporter.sendMail({
     from: process.env.EMAIL_USER,
