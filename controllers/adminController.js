@@ -2,7 +2,8 @@ import Student from "../models/Student.js";
 import Order from "../models/Order.js";
 import bcrypt from "bcryptjs";
 import StudentRequest from "../models/StudentRequest.js";
-import { sendStudentCredentials } from "../services/emailService.js";
+// import { sendStudentCredentials } from "../services/emailService.js";
+import { sendStudentCredentialsSms } from "../services/smsService.js";
 
 export const getStudents = async (req, res) => {
 
@@ -66,7 +67,9 @@ export const registerStudent = async (req, res) => {
       ...data,
       password: hashedPassword
     });
-    await sendStudentCredentials(req.body.email, req.body.regNo, password);
+    // await sendStudentCredentials(req.body.email, req.body.regNo, password);
+
+    await sendStudentCredentialsSms(req.body.phone, req.body.regNo, password);
 
 
     await StudentRequest.findByIdAndDelete(request._id);    
