@@ -1,53 +1,37 @@
-import nodemailer from "nodemailer";
-import dns from "dns";
+import sgMail from "@sendgrid/mail";
 
-dns.setDefaultResultOrder("ipv4first");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
-
-transporter.verify()
-  .then(() => console.log("✅ SMTP Ready"))
-  .catch(err => console.log("❌ SMTP Error:", err));
-
-
+// ✅ OTP Email
 export const sendEmailOtp = async (email, otp) => {
   try {
-    console.log("Sending OTP email to:", email, "with OTP:", otp);
+    console.log("Sending OTP email to:", email, process.env.SENDGRID_API_KEY);
 
-    const cleanEmail = email.trim();
-
-    const info = await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: cleanEmail,
+    const msg = {
+      to: email.trim(),
+      from: process.env.EMAIL_USER, // verified sender
       subject: "Email Verification OTP",
       text: `Your OTP is ${otp}. It expires in 5 minutes.`,
-    });
+    };
 
-    console.log("✅ OTP Email sent:", info.response);
-    return info;
+    const response = await sgMail.send(msg);
+
+    console.log("✅ OTP Email sent:", response[0].statusCode);
+    return response;
 
   } catch (err) {
-    console.error("❌ Error sending OTP:", err);
-    throw err; // important
+    console.error("❌ Error sending OTP:", err.response?.body || err);
+    throw err;
   }
 };
 
-
+// ✅ Student Credentials Email
 export const sendStudentCredentials = async (email, regNo, password) => {
   try {
-    const cleanEmail = email.trim();
-
-    const info = await transporter.sendMail({
+        console.log("Sending credentials email to:", email, process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: email.trim(),
       from: process.env.EMAIL_USER,
-      to: cleanEmail,
       subject: "Your Canteen Account Created",
       html: `
         <h2>Welcome to Annapoorna Smart Canteen</h2>
@@ -60,13 +44,15 @@ export const sendStudentCredentials = async (email, regNo, password) => {
         <br/><br/>
         <p>Please login and change your password after first login.</p>
       `,
-    });
+    };
 
-    console.log(" Credentials Email sent:", info.response);
-    return info;
+    const response = await sgMail.send(msg);
+
+    console.log("✅ Credentials Email sent:", response[0].statusCode);
+    return response;
 
   } catch (err) {
-    console.error(" Error sending credentials:", err);
+    console.error("❌ Error sending credentials:", err.response?.body || err);
     throw err;
   }
 };
