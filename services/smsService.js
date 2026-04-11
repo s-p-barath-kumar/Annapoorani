@@ -31,6 +31,8 @@ Password: ${password}
 Please login and change your password.
 `;
 
+    console.log('client :', process.env.TWILIO_AUTH, process.env.TWILIO_SID, message)
+
     await client.messages.create({
       body: message,
       from: process.env.TWILIO_PHONE,

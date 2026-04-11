@@ -1,6 +1,6 @@
 import Otp from "../models/otpModel.js";
 import otpGenerator from "otp-generator";
-import { sendEmailOtp } from "../services/emailService.js";
+// import { sendEmailOtp } from "../services/emailService.js";
 import { sendSmsOtp } from "../services/smsService.js";
 
 const OTP_EXPIRY = 5 * 60 * 1000;
@@ -37,7 +37,8 @@ export const sendOtp = async (req, res) => {
     });
 
     if (type === "email") {
-      sendEmailOtp(identifier, otp);
+      // sendEmailOtp(identifier, otp);
+      console.log("Sending email need to implement")
     }
 
     if (type === "phone") {
