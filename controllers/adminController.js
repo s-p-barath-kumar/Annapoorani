@@ -68,9 +68,10 @@ export const registerStudent = async (req, res) => {
       password: hashedPassword
     });
     // await sendStudentCredentials(req.body.email, req.body.regNo, password);
+    console.log("Generated password for student:", password, "Sending SMS to:", req.body.phone);
+    const smsResponse = await sendStudentCredentialsSms(req.body.phone, req.body.regNo, password);
 
-    await sendStudentCredentialsSms(req.body.phone, req.body.regNo, password);
-
+    console.log("SMS response:", smsResponse);
 
     await StudentRequest.findByIdAndDelete(request._id);    
 
