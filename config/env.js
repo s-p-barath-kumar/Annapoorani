@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import path from "path";
 
-const env = process.env.NODE_ENV || "development";
+const env = process.env.NODE_ENV || "production";
 
 const envPath = path.resolve(
   process.cwd(),
