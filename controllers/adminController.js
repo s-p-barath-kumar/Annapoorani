@@ -3,7 +3,6 @@ import Order from "../models/Order.js";
 import bcrypt from "bcryptjs";
 import StudentRequest from "../models/StudentRequest.js";
 import { sendStudentCredentials } from "../services/emailService.js";
-// import { sendStudentCredentialsSms } from "../services/smsService.js";
 
 export const getStudents = async (req, res) => {
 
@@ -67,9 +66,7 @@ export const registerStudent = async (req, res) => {
       ...data,
       password: hashedPassword
     });
-    console.log("Generated password for student:", password, "Sending SMS to:", req.body.phone);
     await sendStudentCredentials(req.body.email, req.body.regNo, password);
-    // const smsResponse = await sendStudentCredentialsSms(req.body.phone, req.body.regNo, password);
 
     await StudentRequest.findByIdAndDelete(request._id);    
 

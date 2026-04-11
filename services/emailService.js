@@ -2,14 +2,13 @@ import sgMail from "@sendgrid/mail";
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// ✅ OTP Email
 export const sendEmailOtp = async (email, otp) => {
   try {
     console.log("Sending OTP email to:", email, process.env.SENDGRID_API_KEY);
 
     const msg = {
       to: email.trim(),
-      from: process.env.EMAIL_USER, // verified sender
+      from: process.env.EMAIL_USER,
       subject: "Email Verification OTP",
       text: `Your OTP is ${otp}. It expires in 5 minutes.`,
     };
@@ -25,7 +24,6 @@ export const sendEmailOtp = async (email, otp) => {
   }
 };
 
-// ✅ Student Credentials Email
 export const sendStudentCredentials = async (email, regNo, password) => {
   try {
         console.log("Sending credentials email to:", email, process.env.SENDGRID_API_KEY);
