@@ -71,7 +71,7 @@ export const registerStudent = async (req, res) => {
     await sendStudentCredentials(req.body.email, req.body.regNo, password);
     // const smsResponse = await sendStudentCredentialsSms(req.body.phone, req.body.regNo, password);
 
-    console.log("SMS response:", smsResponse);
+    // console.log("SMS response:", smsResponse);
 
     await StudentRequest.findByIdAndDelete(request._id);    
 
