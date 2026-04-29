@@ -1,56 +1,57 @@
-import sgMail from "@sendgrid/mail";
+import emailjs from "@emailjs/nodejs";
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const SERVICE_ID = process.env.EMAILJS_SERVICE_ID;
+const TEMPLATE_OTP_ID = process.env.EMAILJS_TEMPLATE_OTP_ID;
+const TEMPLATE_CREDENTIALS_ID = process.env.EMAILJS_TEMPLATE_CREDENTIALS_ID;
+const PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY;
+const PRIVATE_KEY = process.env.EMAILJS_PRIVATE_KEY;
 
 export const sendEmailOtp = async (email, otp) => {
   try {
-    console.log("Sending OTP email to:", email, process.env.SENDGRID_API_KEY);
+    const response = await emailjs.send(
+      SERVICE_ID,
+      TEMPLATE_OTP_ID,
+      {
+        to_email: email,
+        otp: otp,
+      },
+      {
+        publicKey: PUBLIC_KEY,
+        privateKey: PRIVATE_KEY,
+      }
+    );
 
-    const msg = {
-      to: email.trim(),
-      from: process.env.EMAIL_USER,
-      subject: "Email Verification OTP",
-      text: `Your OTP is ${otp}. It expires in 5 minutes.`,
-    };
-
-    const response = await sgMail.send(msg);
-
-    console.log("✅ OTP Email sent:", response[0].statusCode);
+    console.log("OTP Sent");
     return response;
-
-  } catch (err) {
-    console.error("❌ Error sending OTP:", err.response?.body || err);
-    throw err;
+  } catch (error) {
+    console.log(error);
   }
 };
 
-export const sendStudentCredentials = async (email, regNo, password) => {
+// Credentials Email
+export const sendStudentCredentials = async (
+  email,
+  regNo,
+  password
+) => {
   try {
-        console.log("Sending credentials email to:", email, process.env.SENDGRID_API_KEY);
-    const msg = {
-      to: email.trim(),
-      from: process.env.EMAIL_USER,
-      subject: "Your Canteen Account Created",
-      html: `
-        <h2>Welcome to Annapoorna Smart Canteen</h2>
+    const response = await emailjs.send(
+      SERVICE_ID,
+      TEMPLATE_CREDENTIALS_ID,
+      {
+        to_email: email,
+        reg_no: regNo,
+        password: password,
+      },
+      {
+        publicKey: PUBLIC_KEY,
+        privateKey: PRIVATE_KEY,
+      }
+    );
 
-        <p>Your student account has been successfully created.</p>
-
-        <b>Registration Number:</b> ${regNo} <br/>
-        <b>Password:</b> ${password}
-
-        <br/><br/>
-        <p>Please login and change your password after first login.</p>
-      `,
-    };
-
-    const response = await sgMail.send(msg);
-
-    console.log("✅ Credentials Email sent:", response[0].statusCode);
+    console.log("Credentials Sent");
     return response;
-
-  } catch (err) {
-    console.error("❌ Error sending credentials:", err.response?.body || err);
-    throw err;
+  } catch (error) {
+    console.log(error);
   }
 };
